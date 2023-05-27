@@ -1,6 +1,22 @@
+import { useContext } from "react"
 import { Link } from "react-router-dom"
+import { AuthContext } from "../../../providers/AuthProvide"
+import Swal from "sweetalert2"
 
 const Navbar = () => {
+  const {user,logOut} = useContext(AuthContext)
+
+
+  const handleLogout=()=>{
+    logOut()
+    .then(() => {
+      // Sign-out successful.
+      Swal.fire('Log Out successfully done')
+    }).catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
+  }
   const navOption = (
     <>
       <li>
@@ -13,8 +29,16 @@ const Navbar = () => {
         <Link to="/order/salad">Order Food</Link>
       </li>
       <li>
-        <Link to="/login">Login</Link>
+        <Link to="/secret">Privet route</Link>
       </li>
+     
+      {
+        user? <> <li>
+        <div onClick={handleLogout} className="btn btn-ghost">Log out</div>
+      </li></>:<> <li>
+        <Link to="/login">Login</Link>
+      </li></>
+      }
 
     
     </>
