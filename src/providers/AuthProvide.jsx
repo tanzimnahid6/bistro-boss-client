@@ -9,7 +9,7 @@ const AuthProvide = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  //create user =========================================
+  //create user method =========================================
   const createUser = (email, password) => {
     setLoading(true)
     return createUserWithEmailAndPassword(email,password,auth)

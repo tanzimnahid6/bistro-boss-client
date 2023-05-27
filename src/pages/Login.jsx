@@ -5,11 +5,14 @@ import {
   validateCaptcha,
 } from "react-simple-captcha"
 import { AuthContext } from "../providers/AuthProvide"
+import { Link } from "react-router-dom"
 const Login = () => {
   const captchaRef = useRef(null)
   const emailRef = useRef(null)
   const [disabled, setDisabled] = useState(true)
   const { signIn } = useContext(AuthContext)
+
+
   const handleLogin = (e) => {
     e.preventDefault()
     const form = e.target
@@ -112,6 +115,9 @@ const Login = () => {
                 />
               </div>
             </form>
+            <div className="text-center m-2">
+              <p>New here ? create a new account <Link to="/signup" className="btn btn-sm">Sign up</Link> </p>
+            </div>
           </div>
         </div>
       </div>
