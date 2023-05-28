@@ -9,7 +9,7 @@ const PrivetRout = ({ children }) => {
     return <div className="m-8"><progress className="progress w-56"></progress></div>
   }
   if(!user){
-    return <Navigate to="/login" state={{from:location}}></Navigate>
+    return <Navigate to="/login" state={{from:location}} replace></Navigate>
   }
   return <>{children}</>
 }

@@ -3,24 +3,27 @@ import { Link } from "react-router-dom"
 import { AuthContext } from "../../../providers/AuthProvide"
 import Swal from "sweetalert2"
 
+import { AiOutlineShoppingCart } from "react-icons/ai"
+import useCart from "../../../Hooks/useCart"
 const Navbar = () => {
-  const {user,logOut} = useContext(AuthContext)
-
-
-  const handleLogout=()=>{
+  const { user, logOut } = useContext(AuthContext)
+  const [,cart] = useCart()
+  
+  const handleLogout = () => {
     logOut()
-    .then(() => {
-      // Sign-out successful.
-      Swal.fire('Log Out successfully done')
-    }).catch((error) => {
-      // An error happened.
-      console.log(error);
-    });
+      .then(() => {
+        // Sign-out successful.
+        Swal.fire("Log Out successfully done")
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error)
+      })
   }
   const navOption = (
     <>
       <li>
-        <Link link='/'>Home</Link>
+        <Link link="/">Home</Link>
       </li>
       <li>
         <Link to="/menu">Our Menu</Link>
@@ -31,21 +34,37 @@ const Navbar = () => {
       <li>
         <Link to="/secret">Privet route</Link>
       </li>
-     
-      {
-        user? <> <li>
-        <div onClick={handleLogout} className="btn btn-ghost">Log out</div>
-      </li></>:<> <li>
-        <Link to="/login">Login</Link>
-      </li></>
-      }
+      <li>
+        <Link to="/">
+          <button className=" flex items-center">
+            <AiOutlineShoppingCart size={24}></AiOutlineShoppingCart>
+            <div className="badge badge-secondary">
+              {cart ? cart.length : 0}
+            </div>
+          </button>
+        </Link>
+      </li>
 
-    
+      {user ? (
+        <>
+          <li>
+            <div onClick={handleLogout} className="btn btn-ghost">
+              Log out
+            </div>
+          </li>
+        </>
+      ) : (
+        <>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+        </>
+      )}
     </>
   )
   return (
     <>
-      <div className="navbar fixed bg-opacity-20 z-10 max-w-screen-xl mx-auto bg-black text-white">
+      <div className="navbar fixed bg-opacity-80 z-10 max-w-screen-xl mx-auto bg-black text-white">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
