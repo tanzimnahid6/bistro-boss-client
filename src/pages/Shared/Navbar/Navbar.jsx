@@ -35,7 +35,7 @@ const Navbar = () => {
         <Link to="/secret">Privet route</Link>
       </li>
       <li>
-        <Link to="/">
+        <Link to="/dashboard/myCart">
           <button className=" flex items-center">
             <AiOutlineShoppingCart size={24}></AiOutlineShoppingCart>
             <div className="badge badge-secondary">
