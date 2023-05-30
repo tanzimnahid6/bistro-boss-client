@@ -42,17 +42,21 @@ const router = createBrowserRouter([
           </PrivetRout>
         ),
       },
-    ]
+    ],
   },
   {
-    path:'/dashboard',
-    element:<Dashboard></Dashboard>,
-    children:[
-     {
-      path:'myCart',
-      element:<MyCart></MyCart>
-     }
-    ]
-  }
-])
+    path: "/dashboard",
+    element: (
+      <PrivetRout>
+        <Dashboard></Dashboard>
+      </PrivetRout>
+    ),
+    children: [
+      {
+        path: "myCart",
+        element: <MyCart></MyCart>,
+      },
+    ],
+  },
+]);
 export default router

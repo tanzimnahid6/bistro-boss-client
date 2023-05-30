@@ -1,40 +1,58 @@
-import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router-dom"
-import PageTitle from "../../components/PageTitle/PageTitle"
-import { useContext } from "react"
-import { AuthContext } from "../../providers/AuthProvide"
+import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import PageTitle from "../../components/PageTitle/PageTitle";
+import { useContext } from "react";
+import { AuthContext } from "../../providers/AuthProvide";
+import Swal from "sweetalert2";
+import Social from "./SocialLogin.jsx/Social";
 
 const SignUp = () => {
-    const {createUser,logOut} = useContext(AuthContext)
-    const navigate = useNavigate()
+  const { createUser,  updateUserProfile } =
+    useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-
     formState: { errors },
-  } = useForm()
+  } = useForm();
+
   const onSubmit = (data) => {
-    console.log(data)
-    createUser(data.email,data.password)
-    .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        console.log(user);
-        navigate('/login')
-        logOut()
-        // ...
-      })
-      .catch((error) => {
-       
-        const errorMessage = error.message;
-        console.log(errorMessage);
-        // ..
-      });
-  }
+    createUser(data.email, data.password).then((result) => {
+      const loggedUser = result.user;
+      console.log(loggedUser);
+
+      updateUserProfile(data.name, data.photoURL)
+        .then(() => {
+          const saveUser = { name: data.name, email: data.email };
+          fetch("http://localhost:5000/users", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify(saveUser),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.insertedId) {
+                // reset();
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title: "User created successfully.",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                navigate("/");
+              }
+            });
+        })
+        .catch((error) => console.log(error));
+    });
+  };
 
   return (
     <div className="hero min-h-screen bg-base-200">
-    <PageTitle title={"Sing up"}></PageTitle>
+      <PageTitle title={"Sing up"}></PageTitle>
       <div className="hero-content flex-col lg:flex-row-reverse">
         <div className="text-center lg:text-left">
           <h1 className="text-5xl font-bold">Sign up now!</h1>
@@ -60,6 +78,22 @@ const SignUp = () => {
                 <span className="text-red-500">name field is required</span>
               )}
             </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Photo URL</span>
+              </label>
+              <input
+                type="text"
+                {...register("photoURL", { required: true })}
+                placeholder="Photo URL"
+                className="input input-bordered"
+              />
+              {errors.photoURL && (
+                <span className="text-red-600">Photo URL is required</span>
+              )}
+            </div>
+
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -106,18 +140,28 @@ const SignUp = () => {
               {/* STRONG PASSWORD VALIDATION================================END========================== */}
               <label className="label text-center">
                 <p>
-                  Already sign in go to <Link className="btn btn-xs" to="/login">Login</Link>{" "}
+                  Already sign in go to{" "}
+                  <Link className="btn btn-xs" to="/login">
+                    Login
+                  </Link>
                 </p>
               </label>
             </div>
             <div className="form-control mt-6">
-      <input type="submit" className="btn btn-primary" value={"sign up"} />
+              <input
+                type="submit"
+                className="btn btn-primary"
+                value={"sign up"}
+              />
             </div>
           </form>
+          <div className="text-center">
+            <Social></Social>
+          </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

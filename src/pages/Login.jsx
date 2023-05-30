@@ -8,6 +8,7 @@ import { AuthContext } from "../providers/AuthProvide"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import PageTitle from "../components/PageTitle/PageTitle"
 import Swal from "sweetalert2"
+import Social from "./Shared/SocialLogin.jsx/Social"
 
 const Login = () => {
   const location = useLocation()
@@ -124,8 +125,9 @@ const Login = () => {
                 New here ? create a new account{" "}
                 <Link to="/signup" className="btn btn-sm">
                   Sign up
-                </Link>{" "}
+                </Link>
               </p>
+              <Social></Social>
             </div>
           </div>
         </div>
